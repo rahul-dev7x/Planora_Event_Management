@@ -186,7 +186,10 @@ const paymentVerification=async(req,res)=>{
       }
 
     //console.log("payment_verification",req.body)
-    res.redirect(`${process.env.USER_FRONTEND_URL}/upcoming-events`)
+    return res.json({
+        success: true,
+        message: 'Payment verified successfully!',
+      });
         //res.status(200).json({message:"verified payment",success:true,error:false,ticket})
     }
     catch(err)

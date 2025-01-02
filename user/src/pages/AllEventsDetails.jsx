@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSingleEvent } from "../redux/all-events";
 import { Button } from "@/components/ui/button";
 import { formDate } from "../config/dateStructure";
+import { toast } from 'sonner';
 
 const AllEventDetails = () => {
   const params = useParams();
@@ -100,6 +101,25 @@ const AllEventDetails = () => {
       },
       theme: {
         color: "#121212",
+      },
+      handler: async function (response) {
+        try {
+          
+          const verificationResponse = await api.post(
+            RAZORPAY_PAYMENT_VERIFICATION_URL,
+            response
+          );
+
+          if (verificationResponse.data.success) {
+            toast.success("Payment Successful!"); 
+            navigate("/upcoming-events"); 
+          } else {
+            toast.error("Payment verification failed!"); 
+          }
+        } catch (error) {
+          console.error("Error during payment verification:", error);
+          toast.error("Error verifying payment. Please try again."); 
+        }
       },
     };
 

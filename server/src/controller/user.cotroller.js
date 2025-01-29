@@ -4,12 +4,33 @@ import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 import {google} from 'googleapis'
 import dotenv from "dotenv";
+import validator from "validator";
+import isEmail from "validator/lib/isEmail.js"
 dotenv.config({})
 const signUp=async(req,res)=>{
     try{
         const {name,email,password,role}=req.body;
+        //console.log("email",email)
+        //console.log(email.toString().includes("yahoo"))
+        const regex = /[^A-Za-z0-9]/;
         if (!name || !email || !password || !role) {
             return res.status(400).json({ message: "Please provide all required fields: name, email, password, and role." });
+          }
+          if(password.length<6){
+            return res.status(400).json({message:"Please Create Password>6",success:false,error:true})
+          }
+          if(!regex.test(password))
+          {
+            return res.status(400).json({message:"You have to enter atleast one speacial charecter in password",success:false,error:true})
+          }
+          if(!validator.isEmail(email))
+          {
+            return res.status(400).json({message:"Please enter a valid email",success:false,error:true})
+          }
+          if(email.includes("yahoo"))
+          {
+            return res.status(400).json({message:"Please enter a valid Gmail",success:false,error:true})
+
           }
       
           const existingUser = await UserModel.findOne({ email });
@@ -46,6 +67,9 @@ const login = async (req, res) => {
     }
     try {
       const { email, password } = req.body;
+      // if(password.length<6){
+      //   return res.status(400).json({message:"Please Create Password>6",success:false,error:true})
+      // }
   
       if (!email || !password) {
         return res
@@ -75,7 +99,7 @@ const login = async (req, res) => {
           expiresIn: "1h",
         });
       }
-  
+
       
     
 

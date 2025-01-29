@@ -247,7 +247,8 @@ const totalAttendees=async(req,res)=>{
         const eventId=events.map(event=>event._id);
         const tickets=await TicketModel.find({event:eventId,payment_status:
 "completed"}).populate("user");
-const attendees=tickets.map(ticket=>ticket.user._id);
+//console.log("tickets",tickets)
+const attendees=tickets.map(ticket=>ticket?.user?._id);
 //const uniqueUserIds=[...new Set(attendees)];
 const uniqueUsers=attendees.length;
 //console.log(attendees)

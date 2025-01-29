@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 
-import { toast } from 'sonner'
+import { toast } from "sonner";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "@/redux/auth-slice";
@@ -13,12 +13,15 @@ import { setUser } from "@/redux/auth-slice";
 import { api } from "@/config/api";
 import { LOGIN_URL } from "@/config";
 import GoogleAuth from "../components/shared/GoogleAuth";
-
+import { FaRegEye } from "react-icons/fa";
+import { IoEyeOffOutline } from "react-icons/io5";
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+
+  const [isSelectedPassword, setIsSelecetedPassword] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
@@ -90,17 +93,37 @@ const Login = () => {
             >
               Password
             </Label>
-            <Input
-              id="password"
-              name="password"
-              type="password"
-              placeholder="Enter your Passord"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
+            <div className="relative ">
+              <Input
+                id="password"
+                name="password"
+                type={isSelectedPassword ? "text" : "password"}
+                placeholder="Enter your Passord"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+              <div className="absolute right-2 bottom-2">
+              {isSelectedPassword ? (
+                <FaRegEye
+                  onClick={() => setIsSelecetedPassword((prev) => !prev)}
+                />
+              ) : (
+                <IoEyeOffOutline
+                  onClick={() => setIsSelecetedPassword((prev) => !prev)}
+                />
+              )}
+              </div>
+              
+            </div>
           </div>
-          <p className="flex justify-end mt-2">Not have an account? <Link to="/auth/register" className="ml-1 hover:underline"> SignUp</Link></p>
+          <p className="flex justify-end mt-2">
+            Not have an account?{" "}
+            <Link to="/auth/register" className="ml-1 hover:underline">
+              {" "}
+              SignUp
+            </Link>
+          </p>
 
           <Button
             type="submit"

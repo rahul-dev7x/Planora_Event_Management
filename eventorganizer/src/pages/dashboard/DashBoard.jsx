@@ -18,6 +18,7 @@ const DashBoard = () => {
   const { totalEvents, totalAttendees, totalRevenue } = useSelector(
     (state) => state.dashboard
   );
+  const {user}=useSelector(state=>state.auth)
   console.log("Total Events:", totalEvents);
   console.log("Total Attendees:", totalAttendees);
   console.log("Total Revenue:", totalRevenue);
@@ -47,7 +48,7 @@ const DashBoard = () => {
     };
 
     fetchData();
-  }, [dispatch]);
+  }, [dispatch,totalEvents, totalAttendees, totalRevenue,user]);
 
   return (
     <div className="bg-gray-100 p-8 min-h-screen">
